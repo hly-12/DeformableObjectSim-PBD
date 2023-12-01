@@ -1,0 +1,682 @@
+
+// Copyright Aleksey Gurtovoy 2000-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Preprocessed version of "boost/mpl/vector/vector30_c.hpp" header
+// -- DO NOT modify by hand!
+
+namespace boost { namespace mpl {
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    >
+struct vector21_c
+    : vector21<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 > 
+ >
+{
+    typedef vector21_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21
+    >
+struct vector22_c
+    : vector22<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 > 
+ >
+{
+    typedef vector22_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22
+    >
+struct vector23_c
+    : vector23<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >, integral_c<T
+        , C22> 
+ >
+{
+    typedef vector23_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23
+    >
+struct vector24_c
+    : vector24<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 > 
+ >
+{
+    typedef vector24_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24
+    >
+struct vector25_c
+    : vector25<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 > 
+ >
+{
+    typedef vector25_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24, T C25
+    >
+struct vector26_c
+    : vector26<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 >, integral_c<T
+        , C25> 
+ >
+{
+    typedef vector26_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24, T C25, T C26
+    >
+struct vector27_c
+    : vector27<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 >
+        , integral_c< T,C25 >, integral_c< T,C26 > 
+ >
+{
+    typedef vector27_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24, T C25, T C26, T C27
+    >
+struct vector28_c
+    : vector28<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 >
+        , integral_c< T,C25 >, integral_c< T,C26 >, integral_c< T,C27 > 
+ >
+{
+    typedef vector28_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24, T C25, T C26, T C27, T C28
+    >
+struct vector29_c
+    : vector29<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 >
+        , integral_c< T,C25 >, integral_c< T,C26 >, integral_c< T,C27 >, integral_c<T
+        , C28> 
+ >
+{
+    typedef vector29_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19, T C20
+    , T C21, T C22, T C23, T C24, T C25, T C26, T C27, T C28, T C29
+    >
+struct vector30_c
+    : vector30<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >
+        , integral_c< T,C19 >, integral_c< T,C20 >, integral_c< T,C21 >
+        , integral_c< T,C22 >, integral_c< T,C23 >, integral_c< T,C24 >
+        , integral_c< T,C25 >, integral_c< T,C26 >, integral_c< T,C27 >
+        , integral_c< T,C28 >, integral_c< T,C29 > 
+ >
+{
+    typedef vector30_c type;
+    typedef T value_type;
+};
+
+}}
+                                                                                                                                                                                                                           72	5
+231	278	5
+214	217	5
+119	34	5
+138	140	5
+258	183	5
+31	100	5
+248	266	5
+319	146	5
+79	20	5
+246	22	5
+223	224	5
+89	90	5
+123	235	5
+168	171	5
+187	156	5
+225	185	5
+269	226	5
+268	349	5
+257	256	5
+263	192	5
+259	195	5
+236	239	5
+299	305	5
+293	296	5
+44	43	5
+201	137	5
+157	199	5
+56	55	5
+355	13	5
+147	150	5
+303	306	5
+184	270	5
+57	158	5
+233	348	5
+261	341	5
+307	41	5
+326	65	5
+63	98	5
+118	113	5
+21	93	5
+338	51	5
+381	291	5
+372	2	5
+356	357	5
+83	318	5
+384	92	5
+363	364	5
+134	374	5
+215	353	5
+117	97	5
+366	190	5
+329	1	5
+287	285	5
+330	327	5
+345	347	5
+252	255	5
+35	301	5
+310	311	5
+260	167	5
+4	84	5
+385	218	5
+49	15	6
+17	60	6
+179	27	6
+68	210	6
+25	275	6
+61	58	6
+159	46	6
+38	48	6
+111	47	6
+314	3	6
+10	353	6
+320	0	6
+174	16	6
+80	74	6
+103	7	6
+131	160	6
+6	308	6
+165	166	6
+144	142	6
+70	69	6
+114	101	6
+193	194	6
+225	181	6
+135	204	6
+363	180	6
+338	50	6
+141	54	6
+305	304	6
+147	324	6
+261	42	6
+273	268	6
+232	227	6
+172	36	6
+202	153	6
+76	77	6
+248	250	6
+246	19	6
+62	106	6
+23	242	6
+238	124	6
+333	332	6
+334	323	6
+325	322	6
+104	105	6
+189	155	6
+294	102	6
+277	12	6
+91	89	6
+29	85	6
+125	300	6
+200	136	6
+134	33	6
+182	183	6
+302	303	6
+40	223	6
+292	213	6
+71	212	6
+108	295	6
+216	211	6
+28	237	6
+241	59	6
+283	90	6
+39	206	6
+176	178	6
+240	243	6
+244	247	6
+284	26	6
+282	281	6
+112	381	6
+37	18	6
+209	208	6
+148	149	6
+315	251	6
+175	169	6
+168	170	6
+262	192	6
+107	109	6
+312	313	6
+52	72	6
+350	214	6
+379	119	6
+13	231	6
+121	34	6
+163	140	6
+258	272	6
+87	32	6
+298	293	6
+382	100	6
+146	162	6
+254	79	6
+129	130	6
+197	257	6
+53	75	6
+110	65	6
+95	78	6
+222	177	6
+348	123	6
+365	187	6
+359	195	6
+342	256	6
+361	191	6
+236	345	6
+335	330	6
+265	266	6
+226	229	6
+161	164	6
+291	24	6
+205	157	6
+228	184	6
+43	344	6
+267	264	6
+321	55	6
+185	186	6
+133	158	6
+199	375	6
+233	380	6
+346	41	6
+63	67	6
+98	99	6
+93	96	6
+326	329	6
+116	118	6
+22	94	6
+9	113	6
+92	30	6
+2	1	6
+218	220	6
+224	307	6
+8	97	6
+73	51	6
+5	249	6
+152	150	6
+252	253	6
+221	352	6
+354	215	6
+4	82	6
+372	373	6
+337	151	6
+198	15	7
+213	17	7
+27	60	7
+212	68	7
+222	25	7
+58	121	7
+46	154	7
+207	38	7
+47	163	7
+3	84	7
+219	10	7
+2	0	7
+173	16	7
+312	74	7
+382	7	7
+199	131	7
+6	126	7
+165	260	7
+142	148	7
+70	48	7
+101	294	7
+192	193	7
+181	274	7
+204	209	7
+180	183	7
+143	50	7
+153	159	7
+54	368	7
+237	304	7
+324	320	7
+166	42	7
+273	271	7
+177	227	7
+188	36	7
+77	69	7
+53	76	7
+314	318	7
+79	250	7
+80	72	7
+19	254	7
+110	62	7
+234	23	7
+238	308	7
+334	333	7
+111	322	7
+105	106	7
+108	104	7
+155	168	7
+1
+// Copyright Aleksey Gurtovoy 2000-2004
+//
+// Distributed under the Boost Software License, Version 1.0. 
+// (See accompanying file LICENSE_1_0.txt or copy at 
+// http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Preprocessed version of "boost/mpl/vector/vector20_c.hpp" header
+// -- DO NOT modify by hand!
+
+namespace boost { namespace mpl {
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    >
+struct vector11_c
+    : vector11<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >, integral_c<T
+        , C10> 
+ >
+{
+    typedef vector11_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11
+    >
+struct vector12_c
+    : vector12<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 > 
+ >
+{
+    typedef vector12_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12
+    >
+struct vector13_c
+    : vector13<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 > 
+ >
+{
+    typedef vector13_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13
+    >
+struct vector14_c
+    : vector14<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >, integral_c<T
+        , C13> 
+ >
+{
+    typedef vector14_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14
+    >
+struct vector15_c
+    : vector15<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 > 
+ >
+{
+    typedef vector15_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15
+    >
+struct vector16_c
+    : vector16<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 > 
+ >
+{
+    typedef vector16_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16
+    >
+struct vector17_c
+    : vector17<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >, integral_c<T
+        , C16> 
+ >
+{
+    typedef vector17_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17
+    >
+struct vector18_c
+    : vector18<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 > 
+ >
+{
+    typedef vector18_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18
+    >
+struct vector19_c
+    : vector19<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 > 
+ >
+{
+    typedef vector19_c type;
+    typedef T value_type;
+};
+
+template<
+      typename T
+    , T C0, T C1, T C2, T C3, T C4, T C5, T C6, T C7, T C8, T C9, T C10
+    , T C11, T C12, T C13, T C14, T C15, T C16, T C17, T C18, T C19
+    >
+struct vector20_c
+    : vector20<
+          integral_c< T,C0 >, integral_c< T,C1 >, integral_c< T,C2 >
+        , integral_c< T,C3 >, integral_c< T,C4 >, integral_c< T,C5 >, integral_c< T,C6 >
+        , integral_c< T,C7 >, integral_c< T,C8 >, integral_c< T,C9 >
+        , integral_c< T,C10 >, integral_c< T,C11 >, integral_c< T,C12 >
+        , integral_c< T,C13 >, integral_c< T,C14 >, integral_c< T,C15 >
+        , integral_c< T,C16 >, integral_c< T,C17 >, integral_c< T,C18 >, integral_c<T
+        , C19> 
+ >
+{
+    typedef vector20_c type;
+    typedef T value_type;
+};
+
+}}
+                   

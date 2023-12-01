@@ -1,0 +1,432 @@
+//uniform data here
+uint nodeCount;
+uint springCount;
+uint triCount;
+uint tetCount;
+uint bendingCount;
+
+float dt;
+float invMass;
+float stretchStiffness;
+float compressStiffness;
+float bendingStiffness;
+float tetVolStiffness;
+float convergence_factor;
+
+float3 gravity;
+
+float floorCoordY;
+//structure 
+
+struct vertData
+{
+    float3 pos;
+    float2 uvs;
+    float3 norms;
+};
+struct DistanceConstraint
+{
+    int i1;
+    int i2;
+    float restLength;
+};
+
+struct Triangle
+{
+    int v0;
+    int v1;
+    int v2;
+};
+struct BendingConstraint {
+    int index0;
+    int index1;
+    int index2;
+    int index3;
+    float restAngle;
+};
+struct Tetrahedron
+{
+    int i1;
+    int i2;
+    int i3;
+    int i4;
+    float RestVolume;
+};
+
+//buffer
+RWStructuredBuffer<vertData> vertsBuff;
+
+RWStructuredBuffer<float3> Positions;
+RWStructuredBuffer<float3> Velocities;
+RWStructuredBuffer<float3> ProjectedPositions;
+RWStructuredBuffer<float3> deltaPos;
+RWStructuredBuffer<uint3> deltaPosAsInt;
+RWStructuredBuffer<int> deltaCount;
+
+RWStructuredBuffer<uint> objVolume;
+
+RWStructuredBuffer<DistanceConstraint> distanceConstraints;
+RWStructuredBuffer<BendingConstraint> bendingConstraints;
+RWStructuredBuffer<Tetrahedron> tetVolumeConstraints;
+
+RWStructuredBuffer<Triangle> Triangles;
+RWStructuredBuffer<uint> TrianglePtr;
+
+#pragma kernel applyExplicitEulerKernel
+#pragma kernel floorCollisionKernel
+
+#pragma kernel satisfyDistanceConstraintKernel
+#pragma kernel satisfyBendingConstraintKernel
+#pragma kernel satisfyTetVolConstraintKernel
+
+#pragma kernel averageConstraintDeltasKernel
+
+#pragma kernel updatePositionsKernel
+#pragma kernel computeObjVolumeKernel
+#pragma kernel computeVerticesNormal
+
+
+[numthreads(1024,1,1)]
+void applyExplicitEulerKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= nodeCount) return;
+    //add force to velocity
+    float3 g = float3(0.0f, -9.81f, 0.0f);
+    float3 velocity = Velocities[i.x] + g * invMass * dt;
+    Velocities[i.x] = velocity;
+    //#### damp velocity here####
+    //explicit euler
+    ProjectedPositions[i.x] = Positions[i.x] + velocity * dt;
+
+    
+}
+
+void AtomicAddDelta(int indexIntoDeltaPos, float newDeltaVal, int axis) {
+    uint i_val = asuint(newDeltaVal);
+    uint tmp0 = 0;
+    uint tmp1;
+
+    [allow_uav_condition]
+    while (true) {
+        InterlockedCompareExchange(deltaPosAsInt[indexIntoDeltaPos][axis], tmp0, i_val, tmp1);
+
+        if (tmp1 == tmp0) {
+            break;
+        }
+
+        tmp0 = tmp1;
+        i_val = asuint(newDeltaVal + asfloat(tmp1));
+    }
+
+    return;
+}
+
+void AtomicAddVolume(float newVal) {
+    uint i_val = asuint(newVal);
+    uint tmp0 = 0;
+    uint tmp1;
+
+    [allow_uav_condition]
+    while (true) {
+        InterlockedCompareExchange(objVolume[0],
+            tmp0, i_val, tmp1);
+
+        if (tmp1 == tmp0) {
+            break;
+        }
+        tmp0 = tmp1;
+        i_val = asuint(newVal + asfloat(tmp1));
+    }
+    return;
+}
+[numthreads(1024, 1, 1)]
+void satisfyDistanceConstraintKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= springCount) return;
+    DistanceConstraint constraint = distanceConstraints[i.x];
+    int startIndex = constraint.i1;
+    int endIndex = constraint.i2;
+    float restLength = constraint.restLength;
+
+    float3 pi = float3(0,0,0);
+    float3 pj = float3(0,0,0);
+
+    pi = ProjectedPositions[startIndex];
+    pj = ProjectedPositions[endIndex];
+
+    float3 n = pi - pj;
+    float L = length(n);
+
+    n = normalize(n);
+    /*if (L >= 1e-7) {
+        n = normalize(n);
+    }*/
+    float wi = invMass;
+    float wj = invMass;
+
+    float stiffness = L < restLength ? compressStiffness : stretchStiffness;
+
+    float3 deltaPosPI = -stiffness * wi / (wi + wj) * (L - restLength) * n; //Minus
+    float3 deltaPosPJ = stiffness * wj / (wi + wj) * (L - restLength) * n; //Plus
+
+    //using delta pos to project pos buffer
+    AtomicAddDelta(startIndex, deltaPosPI.x, 0);
+    AtomicAddDelta(startIndex, deltaPosPI.y, 1);
+    AtomicAddDelta(startIndex, deltaPosPI.z, 2);
+
+    AtomicAddDelta(endIndex, deltaPosPJ.x, 0);
+    AtomicAddDelta(endIndex, deltaPosPJ.y, 1);
+    AtomicAddDelta(endIndex, deltaPosPJ.z, 2);
+
+    InterlockedAdd(deltaCount[startIndex], 1);
+    InterlockedAdd(deltaCount[endIndex], 1);
+
+}
+[numthreads(1024, 1, 1)]
+void satisfyBendingConstraintKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= bendingCount) return;
+
+    BendingConstraint constraint = bendingConstraints[i.x];
+
+    float3 p0 = ProjectedPositions[constraint.index0];
+    float3 p1 = ProjectedPositions[constraint.index1];
+    float3 p2 = ProjectedPositions[constraint.index2];
+    float3 p3 = ProjectedPositions[constraint.index3];
+    float restAngle = constraint.restAngle;
+
+    float3 wing = p3 - p2;
+    float wingLength = length(wing);
+
+    if (wingLength >= 1e-7) {
+        //get normals
+        float3 n1 = cross(p2 - p0, p3 - p0);
+        n1 /= dot(n1, n1);
+
+        float3 n2 = cross(p3 - p1, p2 - p1);
+        n2 /= dot(n2, n2);
+
+        //getting constraints along gradients (gradpC)
+        float invWingLength = 1.0f / wingLength;
+
+        float3 q0 = wingLength * n1;
+        float3 q1 = wingLength * n2;
+        float3 q2 = dot(p0 - p3, wing) * invWingLength * n1
+            + dot(p1 - p3, wing) * invWingLength * n2;
+        float3 q3 = dot(p2 - p0, wing) * invWingLength * n1
+            + dot(p2 - p1, wing) * invWingLength * n2;
+
+        //find current angle
+        n1 = normalize(n1);
+        n2 = normalize(n2);
+
+        float d = dot(n1, n2);
+        d = clamp(d, -1.0f, 1.0f);
+        float currentAngle = acos(d);
+
+        //find lamda ( where deltap = lamda*wi*gradConstraint )
+        float lamda = 0;
+        lamda += invMass * dot(q0, q0);
+        lamda += invMass * dot(q1, q1);
+        lamda += invMass * dot(q2, q2);
+        lamda += invMass * dot(q3, q3);
+
+        if (lamda != 0.0f) {
+            lamda = (currentAngle - restAngle) / lamda * bendingStiffness;
+
+            if (dot(cross(n1, n2), wing) > 0.0f) {
+                lamda = -lamda;
+            }
+
+            float3 deltaPos0 = -invMass * lamda * q0;
+            float3 deltaPos1 = -invMass * lamda * q1;
+            float3 deltaPos2 = -invMass * lamda * q2;
+            float3 deltaPos3 = -invMass * lamda * q3;
+
+            AtomicAddDelta(constraint.index0, deltaPos0.x, 0);
+            AtomicAddDelta(constraint.index0, deltaPos0.y, 1);
+            AtomicAddDelta(constraint.index0, deltaPos0.z, 2);
+            InterlockedAdd(deltaCount[constraint.index0], 1);
+
+            AtomicAddDelta(constraint.index1, deltaPos1.x, 0);
+            AtomicAddDelta(constraint.index1, deltaPos1.y, 1);
+            AtomicAddDelta(constraint.index1, deltaPos1.z, 2);
+            InterlockedAdd(deltaCount[constraint.index1], 1);
+
+            AtomicAddDelta(constraint.index2, deltaPos2.x, 0);
+            AtomicAddDelta(constraint.index2, deltaPos2.y, 1);
+            AtomicAddDelta(constraint.index2, deltaPos2.z, 2);
+            InterlockedAdd(deltaCount[constraint.index2], 1);
+
+            AtomicAddDelta(constraint.index3, deltaPos3.x, 0);
+            AtomicAddDelta(constraint.index3, deltaPos3.y, 1);
+            AtomicAddDelta(constraint.index3, deltaPos3.z, 2);
+            InterlockedAdd(deltaCount[constraint.index3], 1);
+        }
+    }
+
+}
+
+[numthreads(1024, 1, 1)]
+void satisfyTetVolConstraintKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= tetCount) return;
+    Tetrahedron constraint = tetVolumeConstraints[i.x];
+
+    int idx1 = constraint.i1;
+    int idx2 = constraint.i2;
+    int idx3 = constraint.i3;
+    int idx4 = constraint.i4;
+    
+    float3 p0 = ProjectedPositions[idx1];
+    float3 p1 = ProjectedPositions[idx2];
+    float3 p2 = ProjectedPositions[idx3];
+    float3 p3 = ProjectedPositions[idx4];
+
+    //float currentVolume = computeTetVolume(p0, p1, p2, p3);
+    float currentVolume = 1.0f / 6.0f
+            * (p2.x * p1.y * p0.z - p3.x * p1.y * p0.z - p1.x * p2.y * p0.z
+            + p3.x * p2.y * p0.z + p1.x * p3.y * p0.z - p2.x * p3.y * p0.z
+            - p2.x * p0.y * p1.z + p3.x * p0.y * p1.z + p0.x * p2.y * p1.z
+            - p3.x * p2.y * p1.z - p0.x * p3.y * p1.z + p2.x * p3.y * p1.z
+            + p1.x * p0.y * p2.z - p3.x * p0.y * p2.z - p0.x * p1.y * p2.z
+            + p3.x * p1.y * p2.z + p0.x * p3.y * p2.z - p1.x * p3.y * p2.z
+            - p1.x * p0.y * p3.z + p2.x * p0.y * p3.z + p0.x * p1.y * p3.z
+            - p2.x * p1.y * p3.z - p0.x * p2.y * p3.z + p1.x * p2.y * p3.z);
+
+    float restVolume = constraint.RestVolume;
+
+    float3 grad0 = cross(p1 - p2, p3 - p2);
+    float3 grad1 = cross(p2 - p0, p3 - p0);
+    float3 grad2 = cross(p0 - p1, p3 - p1);
+    float3 grad3 = cross(p1 - p0, p2 - p0);
+
+    float lambda = grad0.x * grad0.x + grad0.y * grad0.y + grad0.z * grad0.z +
+        grad1.x * grad1.x + grad1.y * grad1.y + grad1.z * grad1.z +
+        grad2.x * grad2.x + grad2.y * grad2.y + grad2.z * grad2.z +
+        grad3.x * grad3.x + grad3.y * grad3.y + grad3.z * grad3.z;
+    lambda = tetVolStiffness * (currentVolume - restVolume) / lambda;
+
+    float3 deltaPos0 = -lambda * grad0;
+    float3 deltaPos1 = -lambda * grad1;
+    float3 deltaPos2 = -lambda * grad2;
+    float3 deltaPos3 = -lambda * grad3;
+
+    AtomicAddDelta(idx1, deltaPos0.x, 0);
+    AtomicAddDelta(idx1, deltaPos0.y, 1);
+    AtomicAddDelta(idx1, deltaPos0.z, 2);
+    InterlockedAdd(deltaCount[idx1], 1);
+
+    AtomicAddDelta(idx2, deltaPos1.x, 0);
+    AtomicAddDelta(idx2, deltaPos1.y, 1);
+    AtomicAddDelta(idx2, deltaPos1.z, 2);
+    InterlockedAdd(deltaCount[idx2], 1);
+
+    AtomicAddDelta(idx3, deltaPos2.x, 0);
+    AtomicAddDelta(idx3, deltaPos2.y, 1);
+    AtomicAddDelta(idx3, deltaPos2.z, 2);
+    InterlockedAdd(deltaCount[idx3], 1);
+
+    AtomicAddDelta(idx4, deltaPos3.x, 0);
+    AtomicAddDelta(idx4, deltaPos3.y, 1);
+    AtomicAddDelta(idx4, deltaPos3.z, 2);
+    InterlockedAdd(deltaCount[idx4], 1);
+
+}
+
+[numthreads(1024, 1, 1)]
+void averageConstraintDeltasKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= nodeCount) return;
+    int index = i.x;
+
+    if (deltaCount[index] > 0) {
+        deltaPos[index].x = asfloat(deltaPosAsInt[index].x);
+        deltaPos[index].y = asfloat(deltaPosAsInt[index].y);
+        deltaPos[index].z = asfloat(deltaPosAsInt[index].z);
+
+        deltaPos[index] /= deltaCount[index];
+    }
+    //relaxation factor use for control the convergence rate of the delta
+    ProjectedPositions[index] += deltaPos[index] * convergence_factor;
+    // reset delta buffers to zero
+    deltaPos[index] = float3(0, 0, 0);
+
+    deltaPosAsInt[index] = uint3(0, 0, 0);
+
+    deltaCount[index] = 0;
+
+
+}
+
+[numthreads(1024, 1, 1)]
+void floorCollisionKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= nodeCount) return;
+   
+    if ((ProjectedPositions[i.x]).y < floorCoordY)
+    {
+        ProjectedPositions[i.x].y = floorCoordY + 0.015f;
+        Velocities[i.x] = float3(0, 0, 0);
+    }
+}
+
+
+[numthreads(1024, 1, 1)]
+void updatePositionsKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= nodeCount) return;
+    
+
+    Velocities[i.x] = (ProjectedPositions[i.x] - Positions[i.x]) / dt;
+    Positions[i.x] = ProjectedPositions[i.x];
+    vertsBuff[i.x].pos = Positions[i.x];
+    //frictions[i.x] = 1;
+}
+
+
+[numthreads(1024, 1, 1)]
+void computeObjVolumeKernel(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= tetCount) return;
+    Tetrahedron constraint = tetVolumeConstraints[i.x];
+    float3 p0 = Positions[constraint.i1];
+    float3 p1 = Positions[constraint.i2];
+    float3 p2 = Positions[constraint.i3];
+    float3 p3 = Positions[constraint.i4];
+
+    float currentVolume = 1.0f / 6.0f
+        * (p2.x * p1.y * p0.z - p3.x * p1.y * p0.z - p1.x * p2.y * p0.z
+            + p3.x * p2.y * p0.z + p1.x * p3.y * p0.z - p2.x * p3.y * p0.z
+            - p2.x * p0.y * p1.z + p3.x * p0.y * p1.z + p0.x * p2.y * p1.z
+            - p3.x * p2.y * p1.z - p0.x * p3.y * p1.z + p2.x * p3.y * p1.z
+            + p1.x * p0.y * p2.z - p3.x * p0.y * p2.z - p0.x * p1.y * p2.z
+            + p3.x * p1.y * p2.z + p0.x * p3.y * p2.z - p1.x * p3.y * p2.z
+            - p1.x * p0.y * p3.z + p2.x * p0.y * p3.z + p0.x * p1.y * p3.z
+            - p2.x * p1.y * p3.z - p0.x * p2.y * p3.z + p1.x * p2.y * p3.z);
+
+    AtomicAddVolume(currentVolume);
+    //frictions[i.x] = 1;
+}
+
+[numthreads(1024, 1, 1)]
+void computeVerticesNormal(uint3 i : SV_DispatchThreadID)
+{
+    if (i.x >= nodeCount) return;
+
+    float3 norm = float3(0, 0, 0);
+    int start = TrianglePtr[i.x];
+    int end = TrianglePtr[i.x + 1];
+
+    for (int j = start; j < end; j++) {
+        Triangle t = Triangles[j];
+        float3 v1 = Positions[t.v0];
+        float3 v2 = Positions[t.v1];
+        float3 v3 = Positions[t.v2];
+
+        float3 N = cross(v2 - v1, v3 - v1);
+        norm += N;
+    }
+  vertsBuff[i.x].norms = normalize(norm);
+  objVolume[0] = 0;
+}
